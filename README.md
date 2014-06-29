@@ -7,7 +7,9 @@ libs and dependencies
 ---------------------
 
 Python 2.7.x
+
 MongoDB >= 2.2.x
+
 RabbitMQ >= 3.3.4 
 
 installation
