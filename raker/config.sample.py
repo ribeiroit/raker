@@ -1,4 +1,13 @@
 # coding: utf-8
+#
+# Copyright (c) 2014 Tirith
+#
+# Licensed under the Apache License, Version 2.0 (the "License")
+#
+# Author: Thiago Ribeiro
+# Email ribeiro dot it at gmail dot com
+# Created: Jun 28, 2014, 4:32 AM
+#
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
  

@@ -1,6 +1,12 @@
 # coding: utf-8
 #
-# Scraper
+# Copyright (c) 2014 Tirith
+#
+# Licensed under the Apache License, Version 2.0 (the "License")
+#
+# Author: Thiago Ribeiro
+# Email ribeiro dot it at gmail dot com
+# Created: Jun 28, 2014, 14:00 PM
 #
 import re
 import urllib
@@ -25,12 +31,7 @@ class Scraper(object):
 		raise NotImplementedError("Method not implemented: connection")
 
 	def grab_user(self):
-		raise NotImplementedError("Method not implemented: grab_users")
-
-	def get_url(self, url, session=True):
-		rc = requests.get(url, cookies = self.session.cookies)
-		s = bs4.BeautifulSoup(rc.text)
-		return s
+		raise NotImplementedError("Method not implemented: grab_user")
 
 class Facebook(Scraper):
 	"""
@@ -48,6 +49,11 @@ class Facebook(Scraper):
 			raise ScraperError(err)
 
 		return True
+
+	def get_url(self, url, session=True):
+		rc = requests.get(url, cookies = self.session.cookies)
+		s = bs4.BeautifulSoup(rc.text)
+		return s
 
 	# Starts a new facebook session
 	def facebook_login(self):
@@ -99,7 +105,7 @@ class Facebook(Scraper):
 		# Get friends information
 		s = self.get_url('https://m.facebook.com/%s?v=friends&refid=17' % profile)
 		pi = s.find('h3', attrs={'class': 'al aps'})
-		
+
 		if pi:
 			total = re.search(r'(\d+)', pi.string)
 			if total:

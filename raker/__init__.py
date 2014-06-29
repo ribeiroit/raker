@@ -1,6 +1,13 @@
 # coding: utf-8
-import pika
-
+#
+# Copyright (c) 2014 Tirith
+#
+# Licensed under the Apache License, Version 2.0 (the "License")
+#
+# Author: Thiago Ribeiro
+# Email ribeiro dot it at gmail dot com
+# Created: Jun 29, 2014, 9:00 AM
+#
 from flask import Flask, jsonify, request, abort, json
 from flask.ext.mongoengine import MongoEngine
  
@@ -10,32 +17,31 @@ app = Flask(__name__)
 app.config.from_pyfile('config.py')
 # set database config
 mongo = MongoEngine(app)
-
-# import rabbit
-from rabbitmq import RabbitMQ
-# import models
+# import mongo models
 from .models import Profile
-
-# set rabbitmq connection
-rabbit = RabbitMQ()
+# import celery task
+from .tasks import scrap_profile
 
 # usage doc
 _usage =	{
-	'url': '/raker',
-	'POST': [
-		'params: profile, p_type (f - facebook, t - twitter)',
-		'desc: Adds a new profile name to be scraped'
-	],
-	'GET': [
-		'params: name',
-		'desc: Reads profile name scraped information'
-	],
-	'DELETE': [
-		'params: profile, type',
-		'desc: Drops a profile'
-	]
+	'/profile': {
+		'POST': [
+			'params: profile, p_type (f - facebook, t - twitter)',
+			'desc: Adds a new profile name to be scraped'
+		],
+		'GET': [
+			'params: name',
+			'desc: Reads profile name scraped information'
+		],
+	},
+	'/profile/popularity': {
+		'GET': [
+			'desc: Get profiles by popularity'
+		]
+	}
 }
 
+# defines errors messages
 @app.errorhandler(400)
 def not_found_error(error):
 	return jsonify({'error': 400, 'message': 'bad request'}), 400
@@ -72,14 +78,26 @@ def raker_create():
 		return jsonify({'error': 400, 'message': 'Invalid p_type value'}), 400
 
 	if Profile.objects(pr=profile,fr=p_type).count() == 0:
-		rabbit.add_message('%s|%s' % (p_type, profile))
+		scrap_profile.delay(p_type, profile)
+		return jsonify({'message': 'Profile added to be scraped'}), 201
+	else:
+		return jsonify({'message': 'Profile already scraped, try get /profile/<profile>'}), 201
 	
-	return jsonify({'message': 'Profile added to be scraped'}), 201
 
-@app.route('/profile/<string:name>')
-def raker_read(name):
-	return jsonify({'name':name}), 200
+@app.route('/profile/<string:ptype>/<string:profile>')
+def raker_read(ptype, profile):
+	profile = Profile.objects.get(fr=ptype, pr=profile)
+	
+	if profile:
+		return profile.to_json(), 200
 
-@app.route('/profile/<string:name>', methods = ['DELETE'])
-def raker_delete(name):
-	return jsonify({'name':name}), 200
+	return jsonify({'error': 400, 'message': 'Profile doesn\'t exist'}), 400
+
+@app.route('/profile/popularity')
+def raker_read_popularity():
+	profiles = [x for x in Profile.objects.all()]
+	
+	if profiles:
+		return profiles.to_json(), 200
+
+	return jsonify({'message': 'There is no profile available yet.'}), 200

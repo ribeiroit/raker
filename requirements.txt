@@ -9,3 +9,4 @@ tweepy
 beautifulsoup4
 mongoengine
 flask_mongoengine
+celery

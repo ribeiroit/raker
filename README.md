@@ -32,7 +32,7 @@ To start the RESTful API:
 
 To start scraper:
 
-	./worker.py
+	./env/bin/celery -A tasks worker --loglevel=info
 
 usage
 -----
@@ -44,6 +44,14 @@ To scrap a facebook profile:
 To scrap a twitter profile:
 	
 	curl -i -H 'Content-type: application/json' -X POST -d '{"profile":"ribeiroit","p_type":"t"}' http://localhost:8080/profile
+
+To read a profile already scraped:
+
+	curl http://localhost:8080/profile/f/ribeiro.it
+
+To read all profiles ordering by popularity:
+
+	curl http://localhost:8080/profile/popularity
 
 tests
 ------
