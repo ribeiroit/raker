@@ -6,6 +6,7 @@ import time
 from raker.rabbitmq import RabbitMQ
 from raker.scraper import Facebook, Twitter
 from raker import mongo
+from raker.models import Profile
 
 rabbit = RabbitMQ()
 
@@ -21,6 +22,8 @@ def callback(ch, method, properties, body):
 	scrap.grab_user(profile)
 
 	if scrap.profile['nm']:
+		p = Profile(**scrap.profile)
+		p.save()
 		print ' [*] Message processed'
 
 	ch.basic_ack(delivery_tag = method.delivery_tag)

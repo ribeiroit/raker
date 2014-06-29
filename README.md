@@ -3,6 +3,13 @@ raker
 
 Social network scraper. Just a simple implementation to grab info from Facebook and Twitter.
 
+libs and dependencies
+---------------------
+
+Python 2.7.x
+MongoDB >= 2.2.x
+RabbitMQ >= 3.3.4 
+
 installation
 ------------
 
@@ -17,8 +24,25 @@ installation
 running
 -------
 
+To start the RESTful API:
+
 	./run.py
+
+To start scraper:
+
+	./worker.py
+
+usage
+-----
+
+To scrap a facebook profile:
+
+	curl -i -H 'Content-type: application/json' -X POST -d '{"profile":"ribeiro.it","p_type":"f"}' http://localhost:8080/profile
+
+To scrap a twitter profile:
 	
+	curl -i -H 'Content-type: application/json' -X POST -d '{"profile":"ribeiroit","p_type":"t"}' http://localhost:8080/profile
+
 tests
 ------
 
