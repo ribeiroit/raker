@@ -1,0 +1,13 @@
+Flask
+flask-pymongo
+flask-wtf
+flask-classy
+flask-testing
+pymongo
+unittest2
+pika
+requests
+tweepy
+beautifulsoup4
+mongoengine
+flask_mongoengine
