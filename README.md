@@ -15,18 +15,47 @@ RabbitMQ >= 3.3.4
 installation
 ------------
 	
-	yum install mongodb-server rabbitmq-server
+	yum install mongodb-server rabbitmq-server supervisor nginx
+	chkconfig mongodb-server on
+	chkconfig rabbitmq-server on
+	chkconfig supervisord on
+	chkconfig nginx on
+	useradd raker
 
+	cd /opt/
 	git clone https://github.com/ribeiroit/raker.git
+	chown raker: raker -R
 	cd raker
-	mkdir env
+	mkdir env logs
 	virtualenv env
 	./env/bin/pip install -r requirements.txt
 	cp raker/config.sample.py raker/config.py
 	(Edit config.py and put your accesses informations)
 
+nginx and supervisord
+---------------------
+
+You can use a process control system to launch your application, so take a look at utils folders.
+
+**API**
+
+	cat /opt/raker/utils/api_supervisord.conf >> /etc/supervisord.conf
+	cp /opt/raker/utils/raker.nginx.conf /etc/nginx/conf.d/
+	sed -i bak -e /YOUR_DOMAIN/<put_your_domain_here>/g /etc/nginx/conf.d/raker.nginx.conf
+	service supervisord restart
+	service nginx restart
+
+**Worker**
+
+Your can run N workers in distributed servers, so if it'll be isolated remember to install supervisord and run:
+
+	cat /opt/raker/utils/celery_supervisord.conf >> /etc/supervisord.conf
+	service supervisord restart
+
 running
 -------
+
+If you don't want run the above step, just open a terminal and run the processess.
 
 To start the RESTful API:
 
