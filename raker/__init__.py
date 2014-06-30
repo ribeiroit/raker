@@ -65,8 +65,7 @@ def usage():
 
 @app.route('/profile', methods = ['POST'])
 def raker_create():
-	if (
-		not request.json
+	if (not request.json
 		or not 'profile' in request.json
 		or not 'p_type' in request.json
 		):
