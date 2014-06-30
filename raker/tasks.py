@@ -25,6 +25,7 @@ def scrap_profile(p_type, profile):
 	elif p_type == 't':
 		scrap = Twitter()
 
+	scrap.connection()
 	scrap.grab_user(profile)
 
 	if scrap.profile['nm']:

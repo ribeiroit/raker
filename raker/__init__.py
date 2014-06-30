@@ -56,7 +56,8 @@ def internal_error(error):
 
 @app.errorhandler(405)
 def not_allowed_error(error):
-	return jsonify({'error': 405, 'message': 'method not allowed', 'usage': _usage}), 405
+	return jsonify({'error': 405, 'message': 'method not allowed', 
+		'usage': _usage}), 405
 
 @app.route('/')
 def usage():
@@ -81,23 +82,36 @@ def raker_create():
 		scrap_profile.delay(p_type, profile)
 		return jsonify({'message': 'Profile added to be scraped'}), 201
 	else:
-		return jsonify({'message': 'Profile already scraped, try get /profile/<profile>'}), 201
+		return jsonify({'message': 'Profile already scraped, try get '\
+			'/profile/<type>/<profile>'}), 201
 	
 
 @app.route('/profile/<string:ptype>/<string:profile>')
 def raker_read(ptype, profile):
-	profile = Profile.objects.get(fr=ptype, pr=profile)
-	
-	if profile:
-		return profile.to_json(), 200
+	try:
+		p = Profile.objects.get(fr=ptype, pr=profile)
 
-	return jsonify({'error': 400, 'message': 'Profile doesn\'t exist'}), 400
+		n = {
+				'name':p.nm, 'profile':p.pr, 'img':p.im, 
+				'pop_index':p.pi, 'desc':p.dc
+		}
+		return jsonify(n), 200
+	except Exception:
+		return jsonify({'error': 400, 'message': 'Profile doesn\'t exist'}), 400
 
-@app.route('/profile/popularity')
-def raker_read_popularity():
-	profiles = [x for x in Profile.objects.all()]
-	
+@app.route('/profile/popularity', defaults={'page':1})
+@app.route('/profile/popularity/page/<int:page>')
+def raker_read_popularity(page=0):
+	profiles = Profile.objects.order_by('-pi').paginate(page=page, per_page=20)
+
 	if profiles:
-		return profiles.to_json(), 200
+		profs = {'profiles':[]}
+		for p in profiles.items:
+			n = {
+				'name':p.nm, 'profile':p.pr, 'img':p.im, 
+				'pop_index':p.pi, 'desc':p.dc
+			}
+			profs['profiles'].append(n)
+		return jsonify(profs), 200
 
 	return jsonify({'message': 'There is no profile available yet.'}), 200

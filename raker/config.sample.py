@@ -46,3 +46,5 @@ TWITTER_CONSUMER_SECRET = '<consumer_secret>'
 TWITTER_ACCESS_TOKEN = '<access_token>'
 TWITTER_ACCESS_TOKEN_SECRET = '<access_token_secret>'
 
+# JSON as UTF-8
+JSON_AS_ASCII = False

@@ -14,6 +14,8 @@ RabbitMQ >= 3.3.4
 
 installation
 ------------
+	
+	yum install mongodb-server rabbitmq-server
 
 	git clone https://github.com/ribeiroit/raker.git
 	cd raker
