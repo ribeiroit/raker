@@ -87,4 +87,4 @@ To read all profiles ordering by popularity:
 tests
 ------
 
-	./env/bin/python -m unittest discover
+	/opt/raker/env/bin/python -m unittest discover
