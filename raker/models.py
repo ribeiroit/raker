@@ -10,25 +10,25 @@
 #
 from raker import mongo
 
+
 class Profile(mongo.Document):
-	"""
-	Profile object to be saved.
-	Names were simplified due it be nosql
-	"""
-	# name
-	nm = mongo.StringField()
-	# image url
-	im = mongo.StringField()
-	# description
-	dc = mongo.StringField()
-	# popularity index
-	pi = mongo.IntField()
-	# from: [f] facebook, [t] twitter
-	fr = mongo.StringField()
-	# profile
-	pr = mongo.StringField()
+    """
+    Profile object to be saved.
+    Names were simplified due it be nosql
+    """
+    # name
+    nm = mongo.StringField()
+    # image url
+    im = mongo.StringField()
+    # description
+    dc = mongo.StringField()
+    # popularity index
+    pi = mongo.IntField()
+    # from: [f] facebook, [t] twitter
+    fr = mongo.StringField()
+    # profile
+    pr = mongo.StringField()
 
-	meta = {
-		'indexes': ['-pi', 'pr']
-	}
-
+    meta = {
+        'indexes': ['-pi', 'pr']
+    }

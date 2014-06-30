@@ -59,11 +59,11 @@ If you don't want run the above step, just open a terminal and run the processes
 
 To start the RESTful API:
 
-	./run.py
+	/opt/raker/run.py
 
 To start scraper:
 
-	./env/bin/celery -A tasks worker --loglevel=info
+	/opt/raker/env/bin/celery -A tasks worker --loglevel=info
 
 usage
 -----

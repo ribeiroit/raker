@@ -10,7 +10,7 @@
 #
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
- 
+
 # Statement for enabling the development environment
 DEBUG = True
 DEBUG_TB_INTERCEPT_REDIRECTS = False
@@ -23,11 +23,11 @@ SERVER_HOST = '0.0.0.0'
 
 # App port
 SERVER_PORT = 8080
- 
+
 # Secret key for signing cookies
 # echo '<your_passphrase>' | md5
 SECRET_KEY = '<secret_key>'
- 
+
 # Database settings
 MONGODB_SETTINGS = {'DB': 'raker', 'HOST': '<host>', 'PORT': 27017}
 TESTING = True
