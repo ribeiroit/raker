@@ -29,6 +29,6 @@ class Profile(mongo.Document):
 	pr = mongo.StringField()
 
 	meta = {
-		'indexes': ['pi', 'pr']
+		'indexes': ['-pi', 'pr']
 	}
 
