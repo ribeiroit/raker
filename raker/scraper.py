@@ -28,7 +28,7 @@ class Scraper(object):
     def __init__(self):
         self.session = ''
         self.profile = {
-            'nm': '', 'im': '', 'dc': '', 'pi': '', 'fr': '', 'pr': ''
+            'nm': '', 'im': '', 'dc': '', 'pi': 0, 'fr': '', 'pr': ''
         }
 
     def connection(self):

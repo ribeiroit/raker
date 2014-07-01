@@ -63,7 +63,7 @@ To start the RESTful API:
 
 To start scraper:
 
-	/opt/raker/env/bin/celery -A tasks worker --loglevel=info
+	/opt/raker/env/bin/celery -A raker.tasks worker --loglevel=info
 
 usage
 -----
